@@ -7,4 +7,4 @@ class BookModel(Model):
     price: int
     image: str
 
-    model_config = {"json_schema_extra": {"example": {"name": "Alice", "age": 30}}}
+    model_config = {"collection": "books"}  # Pydantic v2 스타일

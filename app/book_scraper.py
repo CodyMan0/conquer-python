@@ -2,7 +2,7 @@ import asyncio
 
 import aiohttp
 
-from config import get_secret
+from app.config import get_secret
 
 
 class NaverBookScraper:
