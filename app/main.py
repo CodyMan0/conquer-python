@@ -1,17 +1,23 @@
-from typing import Optional
+from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from starlette.responses import HTMLResponse
 
+BASE_DIR = Path(__file__).resolve().parent
 app = FastAPI()
+print(BASE_DIR)
+
+templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 
-# 데코레이터 문법
-# 이거 하나를 라우터라고 함.
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("./index.html", {"request": request})
 
 
-@app.get("/items/{item_id}/{xyz}")
-def read_item(item_id: int, xyz: str, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q, "xyz": xyz}
+@app.get("/search", response_class=HTMLResponse)
+async def search(request: Request, q: str):
+    return templates.TemplateResponse(
+        "./index.html", {"request": request, "keyword": q}
+    )
